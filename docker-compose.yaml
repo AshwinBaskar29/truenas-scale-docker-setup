@@ -265,14 +265,13 @@ services:
     container_name: homepage
     restart: unless-stopped
     ports:
-      - ${WEBUI_PORT_HOMEPAGE:?err}:3123
+      - ${WEBUI_PORT_HOMEPAGE:?err}:3000
     volumes:
       - /mnt/vault/configs/homepage:/app/config
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
       - PUID=0
       - PGID=0
-      - PORT=3123
       # - UMASK=${UMASK:?err}
       - TZ=${TIMEZONE:?err}
 # NOTE: Homepage MUST NOT connect to the Gluetun VPN container
