@@ -1,0 +1,486 @@
+###########################################################################
+###########################################################################
+networks:
+  mediastack:
+    name: mediastack
+    driver: bridge
+    ipam:
+      driver: default
+
+###########################################################################
+###########################################################################
+##
+##  Docker Compose File: Gluetun (qmcgaw)
+##  Function: VPN Client
+##
+##  Documentation: https://github.com/qdm12/gluetun-wiki
+##
+###########################################################################
+###########################################################################
+services:
+  gluetun:
+    image: qmcgaw/gluetun:latest
+    container_name: gluetun
+    # restart: always
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    ports:
+      - "8888:8888/tcp"                         # Gluetun Local Network HTTP proxy
+      - "8388:8388/tcp"                         # Gluetun Local Network Shadowsocks
+      - "8388:8388/udp"                         # Gluetun Local Network Shadowsocks
+      - ${GLUETUN_CONTROL_PORT:?err}:${GLUETUN_CONTROL_PORT:?err} # Gluetun Status Port
+
+# Comment out lines below if they are not going to use Gluetun VPN for Internet connection:
+
+      - "${WEBUI_PORT_BAZARR:?err}:6767"        # WebUI Portal: Bazarr
+      - "${WEBUI_PORT_LIDARR:?err}:8686"        # WebUI Portal: Lidarr
+      - "${WEBUI_PORT_PROWLARR:?err}:9696"      # WebUI Portal: Prowlarr
+      - "${WEBUI_PORT_RADARR:?err}:7878"        # WebUI Portal: Radarr
+      - "${WEBUI_PORT_SABNZBD:?err}:8080"       # WebUI Portal: SABnzbd
+      - "${WEBUI_PORT_SONARR:?err}:8989"        # WebUI Portal: Sonarr
+      - "${WEBUI_PORT_FIREFOX:?err}:3000"        # WebUI Portal: Firefox
+
+      - "${WEBUI_PORT_FILEBOT:?err}:${WEBUI_PORT_FILEBOT:?err}"           # WebUI Portal: Filebot
+      - "${WEBUI_PORT_QBITTORRENT:?err}:${WEBUI_PORT_QBITTORRENT:?err}"   # WebUI Portal: qBittorrent
+
+      - "${FLARESOLVERR_PORT:?err}:8191"        # Service Port: FlareSolverr
+
+    volumes:
+      - /mnt/vault/configs/gluetun:/gluetun
+    environment:
+      - PUID=${PUID:?err}
+      - PGID=${PGID:?err}
+      # - UMASK=${UMASK:?err}
+      - TZ=${TIMEZONE:?err}
+      - VPN_SERVICE_PROVIDER=${VPN_SERVICE_PROVIDER:?err}
+      # - OPENVPN_USER=${VPN_USERNAME:?err}
+      # - OPENVPN_PASSWORD=${VPN_PASSWORD:?err}
+      - SERVER_COUNTRIES=${SERVER_COUNTRIES}
+      # - SERVER_REGIONS=${SERVER_REGIONS}
+      # - SERVER_CITIES=${SERVER_CITIES}
+      # - SERVER_HOSTNAMES=${SERVER_HOSTNAMES}
+      # - SERVER_CATEGORIES=${SERVER_CATEGORIES}
+      # - FIREWALL_OUTBOUND_SUBNETS=${LOCAL_SUBNET:?err}
+      # - OPENVPN_CUSTOM_CONFIG=${OPENVPN_CUSTOM_CONFIG}
+      - HTTP_CONTROL_SERVER_ADDRESS=:${GLUETUN_CONTROL_PORT:?err}
+      - VPN_TYPE=${VPN_TYPE}
+      # - VPN_ENDPOINT_IP=${VPN_ENDPOINT_IP}
+      # - VPN_ENDPOINT_PORT=${VPN_ENDPOINT_PORT}
+      # - WIREGUARD_PUBLIC_KEY=${WIREGUARD_PUBLIC_KEY}
+      - WIREGUARD_PRIVATE_KEY=${WIREGUARD_PRIVATE_KEY}
+      # - WIREGUARD_PRESHARED_KEY=${WIREGUARD_PRESHARED_KEY}
+      # - WIREGUARD_ADDRESSES=${WIREGUARD_ADDRESSES}
+      - HTTPPROXY=on
+      - SHADOWSOCKS=on
+      - UPDATER_PERIOD=24h
+    networks:
+      - mediastack
+
+###########################################################################
+###########################################################################
+##
+##    Docker Compose File: Authelia (Authelia)
+##    Function: Multi-factor authentication portal for your Apps
+##
+##    Documentation: https://hub.docker.com/r/authelia/authelia
+##    https://www.authelia.com/integration/prologue/get-started/
+##    https://www.linuxserver.io/blog/zero-trust-hosting-and-reverse-proxy-via-cloudflare-swag-and-authelia
+##
+###########################################################################
+###########################################################################
+  authelia:
+    image: ghcr.io/authelia/authelia:latest
+    container_name: authelia
+    volumes:
+      - /mnt/vault/configs/authelia:/config
+    environment:
+      - PUID=${PUID:?err}
+      - PGID=${PGID:?err}
+      # - UMASK=${UMASK:?err}
+      - TZ=${TIMEZONE:?err}
+    restart: unless-stopped
+# NOTE: Authelia MUST NOT connect to the Gluetun VPN container
+    networks:
+      - mediastack
+
+###########################################################################
+###########################################################################
+##
+##  Docker Compose File: Bazarr (LinuxServer.io)
+##  Function: Download subtitles for Radarr and Sonarr
+##
+##  Documentation: https://docs.linuxserver.io/images/docker-bazarr
+##
+###########################################################################
+###########################################################################
+  bazarr:
+    image: lscr.io/linuxserver/bazarr:latest
+    container_name: bazarr
+    restart: unless-stopped
+    volumes:
+      - /mnt/vault/configs/bazarr:/config
+      - ${FOLDER_FOR_TORRENTS:?err}:/app/qBittorrent/downloads
+      - ${FOLDER_FOR_ENGLISH_MOVIES:?err}:/movies/English
+      - ${FOLDER_FOR_REGIONAL_MOVIES:?err}:/movies/Regional
+      - ${FOLDER_FOR_ANIMATED_MOVIES:?err}:/movies/Animated_Movies
+      - ${FOLDER_FOR_ANIME_MOVIES:?err}:/movies/Anime_Movies
+      - ${FOLDER_FOR_TV_SHOWS:?err}:/tv/Tv_shows
+      - ${FOLDER_FOR_ANIMATED_TV_SHOWS:?err}:/tv/Animated_shows
+      - ${FOLDER_FOR_ANIME_TV_SHOWS:?err}:/tv/Anime_shows
+    environment:
+      - PUID=${PUID:?err}
+      - PGID=${PGID:?err}
+      - TZ=${TIMEZONE:?err}
+      - DOCKER_MODS=ghcr.io/themepark-dev/theme.park:bazarr
+      - TP_THEME=${TP_THEME:?err}
+    network_mode: "service:gluetun"
+#    ports:
+#      - "${WEBUI_PORT_BAZARR:?err}:6767"             # Configured in Gluetun VPN container
+
+###########################################################################
+###########################################################################
+##
+##    Docker Compose File: DDNS-Updater (qmcgaw)
+##    Function: Update Dynamic IP addresses for DNS A and/or AAAA records
+##
+##    Documentation: https://hub.docker.com/r/qmcgaw/ddns-updater
+##
+###########################################################################
+###########################################################################
+  ddns-updater:
+    image: qmcgaw/ddns-updater:latest
+    container_name: ddns-updater
+    restart: always
+    user: ${PUID:?err}:${PGID:?err}
+    volumes:
+      - /mnt/vault/configs/ddns-updater:/updater/data
+    ports:
+      - ${WEBUI_PORT_DDNS_UPDATER:?err}:${WEBUI_PORT_DDNS_UPDATER:?err}/tcp
+    environment:
+#      - PUID=${PUID:?err}    # Not used in DDNS-Updater - see above:   user: ${PUID:?err}:${PGID:?err}
+#      - PGID=${PGID:?err}    # Not used in DDNS-Updater - see above:   user: ${PUID:?err}:${PGID:?err}
+      # - UMASK=${UMASK:?err}
+      - TZ=${TIMEZONE:?err}
+      - CONFIG=
+      - PERIOD=5m
+      - UPDATE_COOLDOWN_PERIOD=5m
+      - PUBLICIP_FETCHERS=all
+      - PUBLICIP_HTTP_PROVIDERS=all
+      - PUBLICIPV4_HTTP_PROVIDERS=all
+      - PUBLICIPV6_HTTP_PROVIDERS=all
+      - PUBLICIP_DNS_PROVIDERS=all
+      - PUBLICIP_DNS_TIMEOUT=3s
+      - HTTP_TIMEOUT=10s
+      # Web UI
+      - LISTENING_ADDRESS=:${WEBUI_PORT_DDNS_UPDATER:?err}
+      - ROOT_URL=/
+      # Backup
+      - BACKUP_PERIOD=0 # 0 to disable
+      - BACKUP_DIRECTORY=/updater/data
+      # Other
+      - LOG_LEVEL=info
+      - LOG_CALLER=hidden
+      - SHOUTRRR_ADDRESSES=
+# NOTE: DDNS-Update MUST NOT connect to the Gluetun VPN container
+    networks:
+      - mediastack
+
+###########################################################################
+###########################################################################
+##
+##  Docker Compose File: Filebot (GitHub)
+##  Function: Lookup and Rename Media from Internet Databases
+##
+##  Docker Page:   https://github.com/filebot/filebot-docker#filebot-xpra
+##  Homepage:      https://www.filebot.net/
+##  User Forum:    https://www.filebot.net/forums
+##
+###########################################################################
+###########################################################################
+  filebot:
+    image: rednoah/filebot:xpra
+    container_name: filebot
+    restart: unless-stopped
+    volumes:
+      - /mnt/vault/configs/filebot:/data/filebot
+      - ${FOLDER_FOR_TORRENTS:?err}:/app/qBittorrent/downloads
+      - ${FOLDER_FOR_ENGLISH_MOVIES:?err}:/movies/English
+      - ${FOLDER_FOR_REGIONAL_MOVIES:?err}:/movies/Regional
+      - ${FOLDER_FOR_ANIMATED_MOVIES:?err}:/movies/Animated_Movies
+      - ${FOLDER_FOR_ANIME_MOVIES:?err}:/movies/Anime_Movies
+      - ${FOLDER_FOR_TV_SHOWS:?err}:/tv/Tv_shows
+      - ${FOLDER_FOR_ANIMATED_TV_SHOWS:?err}:/tv/Animated_shows
+      - ${FOLDER_FOR_ANIME_TV_SHOWS:?err}:/tv/Anime_shows
+    environment:
+#      - XPRA_AUTH=password:value=YOUR_PASSWORD
+      - PUID=${PUID:?err}
+      - PGID=${PGID:?err}
+      # - UMASK=${UMASK:?err}
+      - TZ=${TIMEZONE:?err}
+      - DARK_MODE=1
+    network_mode: "container:gluetun"
+#    ports:
+#      - "${WEBUI_PORT_FILEBOT:?err}:5454"             # Configured in Gluetun VPN container
+
+###########################################################################
+###########################################################################
+##
+##  Docker Compose File: Flaresolverr (Flaresolverr)
+##  Function: Cloudflare Proxy Server
+##
+##  Documentation: https://github.com/FlareSolverr/FlareSolverr
+##
+###########################################################################
+###########################################################################
+  flaresolverr:
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    container_name: flaresolverr
+    restart: unless-stopped
+    environment:
+      - LOG_LEVEL=info
+      - LOG_HTML=false
+      - CAPTCHA_SOLVER=none
+      - TZ=${TIMEZONE:?err}
+    network_mode: "service:gluetun"
+    depends_on:
+      gluetun:
+        condition: service_healthy
+#    ports:
+#      - "${FLARESOLVERR_PORT:?err}:8191"             # Configured in Gluetun VPN container
+
+###########################################################################
+###########################################################################
+##
+##  Docker Compose File: Homepage (https://ghcr.io/)
+##  Function: Application Dashboard
+##
+##  Documentation: https://gethomepage.dev/latest/configs/
+##
+###########################################################################
+###########################################################################
+  homepage:
+    image: ghcr.io/gethomepage/homepage:latest
+    container_name: homepage
+    restart: unless-stopped
+    ports:
+      - ${WEBUI_PORT_HOMEPAGE:?err}:3123
+    volumes:
+      - /mnt/vault/configs/homepage:/app/config
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - PUID=0
+      - PGID=0
+      - PORT=3123
+      # - UMASK=${UMASK:?err}
+      - TZ=${TIMEZONE:?err}
+# NOTE: Homepage MUST NOT connect to the Gluetun VPN container
+    networks:
+      - mediastack
+
+###########################################################################
+###########################################################################
+##
+##  Docker Compose File: Lidarr (LinuxServer.io)
+##  Function: Music Library Manager
+##
+##  Documentation: https://docs.linuxserver.io/images/docker-lidarr
+##
+###########################################################################
+###########################################################################
+  lidarr:
+    image: lscr.io/linuxserver/lidarr:latest
+    container_name: lidarr
+    restart: unless-stopped
+    volumes:
+      - /mnt/vault/configs/lidarr:/config
+      - ${FOLDER_FOR_TORRENTS:?err}:/app/qBittorrent/downloads
+      - ${FOLDER_FOR_MUSIC:?err}:/music
+    environment:
+      - PUID=${PUID:?err}
+      - PGID=${PGID:?err}
+      - TZ=${TIMEZONE:?err}
+      - DOCKER_MODS=ghcr.io/themepark-dev/theme.park:lidarr
+      - TP_THEME=${TP_THEME:?err}
+    network_mode: "service:gluetun"
+#    ports:
+#      - "${WEBUI_PORT_LIDARR:?err}:8686"             # Configured in Gluetun VPN container
+
+###########################################################################
+###########################################################################
+##
+##  Docker Compose File: Prowlarr (LinuxServer.io)
+##  Function: Indexer and Search Manager
+##
+##  Documentation: https://docs.linuxserver.io/images/docker-prowlarr
+##
+###########################################################################
+###########################################################################
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:develop
+    container_name: prowlarr
+    restart: unless-stopped
+    volumes:
+      - /mnt/vault/configs/prowlarr:/config
+    environment:
+      - PUID=${PUID:?err}
+      - PGID=${PGID:?err}
+      - TZ=${TIMEZONE:?err}
+      - DOCKER_MODS=ghcr.io/themepark-dev/theme.park:prowlarr
+      - TP_THEME=${TP_THEME:?err}
+    network_mode: "service:gluetun"
+#    ports:
+#      - "${WEBUI_PORT_PROWLARR:?err}:9696"             # Configured in Gluetun VPN container
+
+###########################################################################
+###########################################################################
+##
+##  Docker Compose File: qBittorrent (LinuxServer.io)
+##  Function: Torrent Download Client
+##
+##  Documentation: https://docs.linuxserver.io/images/docker-qbittorrent
+##
+###########################################################################
+###########################################################################
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: qbittorrent
+    restart: unless-stopped
+    volumes:
+      - /mnt/vault/configs/qbittorrent:/config
+      - ${FOLDER_FOR_TORRENTS:?err}:/app/qBittorrent/downloads
+      - ${FOLDER_FOR_MEDIA:?err}:/app/qBittorrent/media
+      - ${FOLDER_FOR_ENGLISH_MOVIES:?err}:/movies/English
+      - ${FOLDER_FOR_REGIONAL_MOVIES:?err}:/movies/Regional
+      - ${FOLDER_FOR_ANIMATED_MOVIES:?err}:/movies/Animated_Movies
+      - ${FOLDER_FOR_ANIME_MOVIES:?err}:/movies/Anime_Movies
+      - ${FOLDER_FOR_TV_SHOWS:?err}:/tv/Tv_shows
+      - ${FOLDER_FOR_ANIMATED_TV_SHOWS:?err}:/tv/Animated_shows
+      - ${FOLDER_FOR_ANIME_TV_SHOWS:?err}:/tv/Anime_shows
+      - ${FOLDER_FOR_MUSIC:?err}:/music
+    environment:
+      - PUID=${PUID:?err}
+      - PGID=${PGID:?err}
+      # - UMASK=${UMASK:?err}
+      - TZ=${TIMEZONE:?err}
+      - WEBUI_PORT=${WEBUI_PORT_QBITTORRENT:?err}
+      - DOCKER_MODS=ghcr.io/themepark-dev/theme.park:qbittorrent
+      - TP_THEME=${TP_THEME:?err}
+## Do Not Change Network for qBittorrent
+## qBittorrent MUST always use a VPN / Secure Internet connection
+    network_mode: "service:gluetun"
+
+###########################################################################
+###########################################################################
+##
+##  Docker Compose File: Radarr (LinuxServer.io)
+##  Function: Movie Library Manager
+##
+##  Documentation: https://docs.linuxserver.io/images/docker-radarr
+##
+###########################################################################
+###########################################################################
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    restart: unless-stopped
+    volumes:
+      - /mnt/vault/configs/radarr:/config
+      - ${FOLDER_FOR_TORRENTS:?err}:/app/qBittorrent/downloads
+      - ${FOLDER_FOR_ENGLISH_MOVIES:?err}:/movies/English
+      - ${FOLDER_FOR_REGIONAL_MOVIES:?err}:/movies/Regional
+      - ${FOLDER_FOR_ANIMATED_MOVIES:?err}:/movies/Animated_Movies
+      - ${FOLDER_FOR_ANIME_MOVIES:?err}:/movies/Anime_Movies
+    environment:
+      - PUID=${PUID:?err}
+      - PGID=${PGID:?err}
+      - TZ=${TIMEZONE:?err}
+      - DOCKER_MODS=ghcr.io/themepark-dev/theme.park:radarr
+      - TP_THEME=${TP_THEME:?err}
+    network_mode: "service:gluetun"
+#    ports:
+#      - "${WEBUI_PORT_RADARR:?err}:7878"             # Configured in Gluetun VPN container
+
+###########################################################################
+###########################################################################
+##
+##  Docker Compose File: SABnzbd (LinuxServer.io)
+##  Function: Usenet Download Client
+##
+##  Documentation: https://docs.linuxserver.io/images/docker-sabnzbd
+##
+###########################################################################
+###########################################################################
+  sabnzbd:
+    image: lscr.io/linuxserver/sabnzbd:latest
+    container_name: sabnzbd
+    restart: unless-stopped
+    volumes:
+      - /mnt/vault/configs/sabnzbd:/config
+      - ${FOLDER_FOR_TORRENTS:?err}:/app/sabnzbd/downloads
+      - ${FOLDER_FOR_MEDIA:?err}:/app/sabnzbd/media
+      - ${FOLDER_FOR_ENGLISH_MOVIES:?err}:/movies/English
+      - ${FOLDER_FOR_REGIONAL_MOVIES:?err}:/movies/Regional
+      - ${FOLDER_FOR_ANIMATED_MOVIES:?err}:/movies/Animated_Movies
+      - ${FOLDER_FOR_ANIME_MOVIES:?err}:/movies/Anime_Movies
+      - ${FOLDER_FOR_TV_SHOWS:?err}:/tv/Tv_shows
+      - ${FOLDER_FOR_ANIMATED_TV_SHOWS:?err}:/tv/Animated_shows
+      - ${FOLDER_FOR_ANIME_TV_SHOWS:?err}:/tv/Anime_shows
+      - ${FOLDER_FOR_MUSIC:?err}:/music
+    environment:
+      - PUID=${PUID:?err}
+      - PGID=${PGID:?err}
+      - TZ=${TIMEZONE:?err}
+      - DOCKER_MODS=ghcr.io/themepark-dev/theme.park:sabnzbd
+      - TP_THEME=${TP_THEME:?err}
+    network_mode: "service:gluetun"
+#    ports:
+#      - "${WEBUI_PORT_SABNZBD:?err}:8080"             # Configured in Gluetun VPN container
+
+###########################################################################
+###########################################################################
+##
+##  Docker Compose File: Sonarr (LinuxServer.io)
+##  Function: Series Library Manager (TV Shows)
+##
+##  Documentation: https://docs.linuxserver.io/images/docker-sonarr
+##
+###########################################################################
+###########################################################################
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    restart: unless-stopped
+    volumes:
+      - /mnt/vault/configs/sonarr:/config
+      - ${FOLDER_FOR_TORRENTS:?err}:/app/qBittorrent/downloads
+      - ${FOLDER_FOR_TV_SHOWS:?err}:/tv/Tv_shows
+      - ${FOLDER_FOR_ANIMATED_TV_SHOWS:?err}:/tv/Animated_shows
+      - ${FOLDER_FOR_ANIME_TV_SHOWS:?err}:/tv/Anime_shows
+    environment:
+      - PUID=${PUID:?err}
+      - PGID=${PGID:?err}
+      - TZ=${TIMEZONE:?err}
+      - DOCKER_MODS=ghcr.io/themepark-dev/theme.park:sonarr
+      - TP_THEME=${TP_THEME:?err}
+    network_mode: "service:gluetun"
+#    ports:
+#      - "${WEBUI_PORT_SONARR:?err}:8989"             # Configured in Gluetun VPN container
+
+  firefox:
+    image: ghcr.io/linuxserver/firefox:latest
+    container_name: firefox
+    environment:
+      - PUID=568
+      - PGID=568
+      - TZ=Asia/Kolkata
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /mnt/vault/configs/firefox:/config
+    network_mode: service:gluetun
+    shm_size: "1gb"
+    restart: unless-stopped
+    depends_on:
+      gluetun:
+        condition: service_healthy
