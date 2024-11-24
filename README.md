@@ -96,8 +96,41 @@ Modify the folder paths by adding your `<pool name>` and add the relevent api ke
 Before installing Nginx Proxy go the `System` tab and click on `General Settings`. Change the `Web Interface HTTP Port` from 80 to something else (eg: 91) and change the `Web Interface HTTPS Port` from 443 to something else (eg: 444). Also change the time zone to youre preference. This will make sure that you will still be able to access your truenas dashboard but now you have have to go to `<ip-address>:444`
 
 
-# media-stack
-Media Stack for portainer on truenas scale electric eel
+# App Specific Settings
 
-Refer https://github.com/geekau/mediastack for more details
+- For DDNS-Updater - Paste the following into the **config.json** file :
+```
+  {
+  "settings": [
+    {
+      "provider": "cloudflare",
+      "zone_identifier": "20ebed1f08d517b878dc7d51fcaa7a50",
+      "domain": "*.m3tal.xyz",
+      "ttl": 60,
+      "token": "Bh2IvRhOSwZF0yvJW8z7W5M6Np_v8Khn6CYM4AMH",
+      "ip_version": "ipv4"
+    }
+  ]
+}
+```
+
+- For FileBrowser - Before installing the app using the docker-compose file, create these 2 files inside the *filebrowser* folder - **settings.json** and **filebrowser.db** by using the `touch` command.
+
+- For Homepage - Adjust the `settings.yaml` ,  `widgets.yaml` and `services.yaml` to customize the Homepage dashboard.
+
+- For Photoprism - After installing the app, go to the container shell by clicking on the console button inside the `photoprism-photoprism-1` container and type this command to reset the admin accout password - `photoprism passwd admin`
+
+- For QBitTorrent - After installing the app,
+  - Check the container logs - *either inside portainer or in dozzle* to get the username and password
+  - Click on *Tools* in the toolbar and then click on *Options*.
+  - Now navigate to the *Downloads* tab and change the **Default Save Path** to `app/qBittorrent/downloads` .
+  - Go to the *BitTorrent* tab and then check the **When ratio reaches** box and set the value as `0` .
+  - Go to the *WebUI* tab and then change the default **Username** and **Password** . Also Check the following checkboxes - **Bypass authentication for clients on localhost** and **Bypass authentication for clients in whitelisted IP subnets** and enter `192.168.0.0/24` to bypass the login screen on localhost.
+ 
+
+# Reading Material
+
+ - Refer https://github.com/geekau/mediastack for more details
+ - Refer to trash guides - https://trash-guides.info/ for setup and customizing all *arr* apps
+ - Refer to https://wiki.serversatho.me/ and https://www.youtube.com/@ServersatHome/videos for truenas setup and apps setup.
 ```
