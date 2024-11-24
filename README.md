@@ -129,6 +129,9 @@ Before installing Nginx Proxy go the *System* tab and click on *General Settings
 
 - For Homepage - Adjust the `settings.yaml` ,  `widgets.yaml` and `services.yaml` to customize the Homepage dashboard.
 
+- For Nginx Proxy Manager - Before installing the app, get a domain name from a domain name provider such as `namecheap.com` or `godaddy.com` etc. Next create a cloudflare account and register the domain on cloudflare and create a ssl certificate. After this configure Nginx Proxy Manager to add the ssl certificate and then you can add proxy hosts to reverse proxy into your server. By doing this, you can now register subdomains with proper ssl certificates so that you can just navigate to an app by typing the website address instead of typing the ip address and the port. For example - `https://jellyfin.homeserver.xyz` .  
+ 
+
 - For Photoprism - After installing the app, go to the container shell by clicking on the console button inside the `photoprism-photoprism-1` container and type this command to reset the admin accout password - `photoprism passwd admin`
 
 - For QBitTorrent - After installing the app,
@@ -138,6 +141,7 @@ Before installing Nginx Proxy go the *System* tab and click on *General Settings
   - Go to the *BitTorrent* tab and then check the **When ratio reaches** box and set the value as `0` .
   - Go to the *WebUI* tab and then change the default **Username** and **Password** . Also Check the following checkboxes - **Bypass authentication for clients on localhost** and **Bypass authentication for clients in whitelisted IP subnets** and enter `192.168.0.0/24` to bypass the login screen on localhost.
  
+- For Vaultwarden - Before installing the app, configure Nginx Proxy Manager.
 
 # Reading Material
 
