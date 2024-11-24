@@ -42,7 +42,6 @@ services:
       - "${WEBUI_PORT_SONARR:?err}:8989"        # WebUI Portal: Sonarr
       - "${WEBUI_PORT_FIREFOX:?err}:3000"        # WebUI Portal: Firefox
 
-      - "${WEBUI_PORT_FILEBOT:?err}:${WEBUI_PORT_FILEBOT:?err}"           # WebUI Portal: Filebot
       - "${WEBUI_PORT_QBITTORRENT:?err}:${WEBUI_PORT_QBITTORRENT:?err}"   # WebUI Portal: qBittorrent
 
       - "${FLARESOLVERR_PORT:?err}:8191"        # Service Port: FlareSolverr
@@ -186,43 +185,6 @@ services:
 # NOTE: DDNS-Update MUST NOT connect to the Gluetun VPN container
     networks:
       - mediastack
-
-###########################################################################
-###########################################################################
-##
-##  Docker Compose File: Filebot (GitHub)
-##  Function: Lookup and Rename Media from Internet Databases
-##
-##  Docker Page:   https://github.com/filebot/filebot-docker#filebot-xpra
-##  Homepage:      https://www.filebot.net/
-##  User Forum:    https://www.filebot.net/forums
-##
-###########################################################################
-###########################################################################
-  filebot:
-    image: rednoah/filebot:xpra
-    container_name: filebot
-    restart: unless-stopped
-    volumes:
-      - /mnt/vault/configs/filebot:/data/filebot
-      - ${FOLDER_FOR_TORRENTS:?err}:/app/qBittorrent/downloads
-      - ${FOLDER_FOR_ENGLISH_MOVIES:?err}:/movies/English
-      - ${FOLDER_FOR_REGIONAL_MOVIES:?err}:/movies/Regional
-      - ${FOLDER_FOR_ANIMATED_MOVIES:?err}:/movies/Animated_Movies
-      - ${FOLDER_FOR_ANIME_MOVIES:?err}:/movies/Anime_Movies
-      - ${FOLDER_FOR_TV_SHOWS:?err}:/tv/Tv_shows
-      - ${FOLDER_FOR_ANIMATED_TV_SHOWS:?err}:/tv/Animated_shows
-      - ${FOLDER_FOR_ANIME_TV_SHOWS:?err}:/tv/Anime_shows
-    environment:
-#      - XPRA_AUTH=password:value=YOUR_PASSWORD
-      - PUID=${PUID:?err}
-      - PGID=${PGID:?err}
-      # - UMASK=${UMASK:?err}
-      - TZ=${TIMEZONE:?err}
-      - DARK_MODE=1
-    network_mode: "container:gluetun"
-#    ports:
-#      - "${WEBUI_PORT_FILEBOT:?err}:5454"             # Configured in Gluetun VPN container
 
 ###########################################################################
 ###########################################################################
@@ -471,8 +433,8 @@ services:
     image: ghcr.io/linuxserver/firefox:latest
     container_name: firefox
     environment:
-      - PUID=568
-      - PGID=568
+      - PUID=0
+      - PGID=0
       - TZ=Asia/Kolkata
     volumes:
       - /etc/localtime:/etc/localtime:ro
