@@ -1,15 +1,32 @@
 ---
 # Widgets configuration for Homepage
 
+- greeting:
+    text_size: xl
+    text: The Vault
+
 - resources:
+    label: System
     cpu: true
     memory: true
-    disk: /disk/mount/vault
+
+- resources:
+    label: Storage
+    expanded: true
+    disk: mnt/vault
+
+- resources:
     cputemp: true
     uptime: true
     units: metric # only used by cpu temp
     refresh: 3000 # optional, in ms
     diskUnits: bytes # optional, bytes (default) or bbytes. Only applies to disk
+
+- search:
+    provider: duckduckgo # google, duckduckgo, bing, baidu, brave or custom
+    focus: true # Optional, will set focus to the search bar on page load
+    showSearchSuggestions: true # Optional, will show search suggestions. Defaults to false
+    target: _blank # One of _self, _blank, _parent or _top
 
 - datetime:
     text_size: xl
@@ -18,3 +35,15 @@
     dateStyle: short
     timeStyle: short
     hour12: true
+
+- openmeteo:
+    label: Current
+    latitude: 13.032641
+    longitude: 80.265496
+    timezone: Asia/Kolkata
+    cache: 5
+    units: metric
+    format: # optional, Intl.NumberFormat options
+      maximumFractionDigits: 1
+
+
