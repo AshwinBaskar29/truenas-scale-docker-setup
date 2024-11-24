@@ -47,7 +47,7 @@ services:
       - "${FLARESOLVERR_PORT:?err}:8191"        # Service Port: FlareSolverr
 
     volumes:
-      - /mnt/vault/configs/gluetun:/gluetun
+      - /mnt/<pool name>/configs/gluetun:/gluetun
     environment:
       - PUID=${PUID:?err}
       - PGID=${PGID:?err}
@@ -93,7 +93,7 @@ services:
     image: ghcr.io/authelia/authelia:latest
     container_name: authelia
     volumes:
-      - /mnt/vault/configs/authelia:/config
+      - /mnt/<pool name>/configs/authelia:/config
     environment:
       - PUID=${PUID:?err}
       - PGID=${PGID:?err}
@@ -119,7 +119,7 @@ services:
     container_name: bazarr
     restart: unless-stopped
     volumes:
-      - /mnt/vault/configs/bazarr:/config
+      - /mnt/<pool name>/configs/bazarr:/config
       - ${FOLDER_FOR_TORRENTS:?err}:/app/qBittorrent/downloads
       - ${FOLDER_FOR_ENGLISH_MOVIES:?err}:/movies/English
       - ${FOLDER_FOR_REGIONAL_MOVIES:?err}:/movies/Regional
@@ -154,7 +154,7 @@ services:
     restart: always
     user: ${PUID:?err}:${PGID:?err}
     volumes:
-      - /mnt/vault/configs/ddns-updater:/updater/data
+      - /mnt/<pool name>/configs/ddns-updater:/updater/data
     ports:
       - ${WEBUI_PORT_DDNS_UPDATER:?err}:${WEBUI_PORT_DDNS_UPDATER:?err}/tcp
     environment:
@@ -229,7 +229,7 @@ services:
     ports:
       - ${WEBUI_PORT_HOMEPAGE:?err}:3000
     volumes:
-      - /mnt/vault/configs/homepage:/app/config
+      - /mnt/<pool name>/configs/homepage:/app/config
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
       - PUID=0
@@ -255,7 +255,7 @@ services:
     container_name: lidarr
     restart: unless-stopped
     volumes:
-      - /mnt/vault/configs/lidarr:/config
+      - /mnt/<pool name>/configs/lidarr:/config
       - ${FOLDER_FOR_TORRENTS:?err}:/app/qBittorrent/downloads
       - ${FOLDER_FOR_MUSIC:?err}:/music
     environment:
@@ -283,7 +283,7 @@ services:
     container_name: prowlarr
     restart: unless-stopped
     volumes:
-      - /mnt/vault/configs/prowlarr:/config
+      - /mnt/<pool name>/configs/prowlarr:/config
     environment:
       - PUID=${PUID:?err}
       - PGID=${PGID:?err}
@@ -309,7 +309,7 @@ services:
     container_name: qbittorrent
     restart: unless-stopped
     volumes:
-      - /mnt/vault/configs/qbittorrent:/config
+      - /mnt/<pool name>/configs/qbittorrent:/config
       - ${FOLDER_FOR_TORRENTS:?err}:/app/qBittorrent/downloads
       - ${FOLDER_FOR_MEDIA:?err}:/app/qBittorrent/media
       - ${FOLDER_FOR_ENGLISH_MOVIES:?err}:/movies/English
@@ -347,7 +347,7 @@ services:
     container_name: radarr
     restart: unless-stopped
     volumes:
-      - /mnt/vault/configs/radarr:/config
+      - /mnt/<pool name>/configs/radarr:/config
       - ${FOLDER_FOR_TORRENTS:?err}:/app/qBittorrent/downloads
       - ${FOLDER_FOR_ENGLISH_MOVIES:?err}:/movies/English
       - ${FOLDER_FOR_REGIONAL_MOVIES:?err}:/movies/Regional
@@ -378,7 +378,7 @@ services:
     container_name: sabnzbd
     restart: unless-stopped
     volumes:
-      - /mnt/vault/configs/sabnzbd:/config
+      - /mnt/<pool name>/configs/sabnzbd:/config
       - ${FOLDER_FOR_TORRENTS:?err}:/app/sabnzbd/downloads
       - ${FOLDER_FOR_MEDIA:?err}:/app/sabnzbd/media
       - ${FOLDER_FOR_ENGLISH_MOVIES:?err}:/movies/English
@@ -414,7 +414,7 @@ services:
     container_name: sonarr
     restart: unless-stopped
     volumes:
-      - /mnt/vault/configs/sonarr:/config
+      - /mnt/<pool name>/configs/sonarr:/config
       - ${FOLDER_FOR_TORRENTS:?err}:/app/qBittorrent/downloads
       - ${FOLDER_FOR_TV_SHOWS:?err}:/tv/Tv_shows
       - ${FOLDER_FOR_ANIMATED_TV_SHOWS:?err}:/tv/Animated_shows
@@ -438,7 +438,7 @@ services:
       - TZ=Asia/Kolkata
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - /mnt/vault/configs/firefox:/config
+      - /mnt/<pool name>/configs/firefox:/config
     network_mode: service:gluetun
     shm_size: "1gb"
     restart: unless-stopped

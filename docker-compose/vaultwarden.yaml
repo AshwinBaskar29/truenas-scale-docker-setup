@@ -6,7 +6,7 @@ services:
     ports:
       - 8090:80
     environment:
-      DOMAIN: "https://key.m3tal.xyz"  # Your domain here!
+      DOMAIN: # Your domain here! (that you creted in nginx proxy)
       # ADMIN_TOKEN: changeme
     volumes:
       - /mnt/vault/configs/vaultwarden:/data

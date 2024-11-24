@@ -19,15 +19,15 @@ services:
       - /dev/dri/renderD128:/dev/dri/renderD128
       - /dev/dri/card0:/dev/dri/card0
     volumes:
-      - /mnt/vault/configs/jellyfin:/config
-      - /mnt/vault/media/Movies/English:/movies/English
-      - /mnt/vault/media/Movies/Regional:/movies/Regional
-      - /mnt/vault/media/Animated/Animated_Movies:/movies/Animated_Movies
-      - /mnt/vault/media/Anime/Anime_Movies:/movies/Anime_Movies
-      - /mnt/vault/media/Family_Videos:/movies/Family_Videos
-      - /mnt/vault/media/Tv_Shows:/tv/Tv_shows
-      - /mnt/vault/media/Animated/Animated_Shows:/tv/Animated_shows
-      - /mnt/vault/media/Anime/Anime_Shows:/tv/Anime_shows
+      - /mnt/<pool name>/configs/jellyfin:/config
+      - /mnt/<pool name>/media/Movies/English:/movies/English
+      - /mnt/<pool name>/media/Movies/Regional:/movies/Regional
+      - /mnt/<pool name>/media/Animated/Animated_Movies:/movies/Animated_Movies
+      - /mnt/<pool name>/media/Anime/Anime_Movies:/movies/Anime_Movies
+      - /mnt/<pool name>/media/Family_Videos:/movies/Family_Videos
+      - /mnt/<pool name>/media/Tv_Shows:/tv/Tv_shows
+      - /mnt/<pool name>/media/Animated/Animated_Shows:/tv/Animated_shows
+      - /mnt/<pool name>/media/Anime/Anime_Shows:/tv/Anime_shows
     ports:
       - 8096:8096
       # - 7359:7359/udp      # Enable for DLNA - Only works on HOST Network Mode
