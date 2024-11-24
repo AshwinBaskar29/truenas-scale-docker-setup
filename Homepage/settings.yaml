@@ -1,0 +1,49 @@
+---
+# Homepage settings configuration
+
+title: My Home Server
+language: en
+
+headerStyle: clean
+
+background:
+  image: https://cdnb.artstation.com/p/assets/images/images/006/897/659/large/mikael-gustafsson-wallpaper-mikael-gustafsson.jpg
+  blur: sm
+  saturate: 100
+  brightness: 50
+  opacity: 100
+  
+
+theme: dark
+color: slate
+
+useEqualHeights: true
+
+iconStyle: mdi-XX
+
+layout:
+  Network:
+    header: true
+    style: row
+    columns: 4
+    
+  Containers:
+    header: true
+    style: row
+    columns: 4
+  Media:
+    header: true
+    style: row
+    columns: 4
+  Storage:
+    header: true
+    style: row
+    columns: 4
+  Photos:
+    header: true
+    style: row
+    columns: 4
+  Utilities:
+    header: true
+    style: row
+    columns: 4

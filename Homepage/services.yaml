@@ -1,0 +1,201 @@
+---
+# Services configuration for Homepage
+# Icons can be found here: https://github.com/walkxcode/dashboard-icons
+
+- Network:
+    - Uptime Kuma:
+        icon: uptime-kuma.svg
+        href: # set the ip address or url
+        description: Uptime Monitoring
+        container: "uptime-kuma-uptime-kuma-1"
+        statusStyle: "dot"
+        widget:
+            type: uptimekuma
+            url: # set the ip address or url
+            slug: # Replace 'home' with the actual slug if your Uptime Kuma has a specific page identifier
+
+    - Speedtest Tracker:
+        icon: mdi-speedometer
+        href: # set the ip address or url
+        description: speedtest
+        container: speedtest-tracker
+        statusStyle: "dot"
+        widget:
+            type: speedtest
+            url: # set the ip address or url
+
+- Containers:
+    - Portainer:
+        icon: portainer.svg
+        href: # set the ip address or url
+        description: Docker management
+        ping: # set the ip address or url
+        statusStyle: "dot"
+
+- Media:
+    - Jellyfin:
+        icon: jellyfin.svg
+        href: # set the ip address or url
+        description: Media server
+        siteMonitor: # set the ip address or url
+        container: "jellyfin"
+        statusStyle: "dot"
+        widget:
+            type: jellyfin
+            url: # set the ip address or url
+            key: # get the api key from jellyfin
+            enableBlocks: true # optional, defaults to false
+            enableNowPlaying: true # optional, defaults to true
+            enableUser: true # optional, defaults to false
+            showEpisodeNumber: true # optional, defaults to false
+            expandOneStreamToTwoRows: false # optional, defaults to true
+
+    - Radarr:
+        icon: radarr.svg
+        href: # set the ip address or url
+        description: Movies manager
+        container: "radarr"
+        statusStyle: "dot"
+        widget:
+            type: radarr
+            url: # set the ip address or url
+            key: # get the api key from radarr
+            enableQueue: true # optional, defaults to false
+
+    - Sonarr:
+        icon: sonarr.svg
+        href: # set the ip address or url
+        description: TV shows manager
+        container: "sonarr"
+        statusStyle: "dot"
+        widget:
+            type: sonarr
+            url: # set the ip address or url
+            key: # get the api key from sonarr
+            enableQueue: true # optional, defaults to false
+        
+    - Lidarr:
+        icon: lidarr.svg
+        href: # set the ip address or url
+        description: Music manager
+        container: "lidarr"
+        statusStyle: "dot"
+        widget:
+            type: lidarr
+            url: # set the ip address or url
+            key: # get the api key from lidarr
+
+    - Prowlarr:
+        icon: prowlarr.svg
+        href: # set the ip address or url
+        description: Indexer aggregator
+        container: "prowlarr"
+        statusStyle: "dot"
+        widget:
+            type: prowlarr
+            url: # set the ip address or url
+            key: # get the api key from prowlarr
+
+    - Bazarr:
+        icon: bazarr.svg
+        href: # set the ip address or url
+        description: Subtitles manager
+        container: "bazarr"
+        statusStyle: "dot"
+        widget:
+            type: bazarr
+            url: # set the ip address or url
+            key: # get the api key from bazarr
+
+    - QBitTorrent:
+        icon: qbittorrent.svg
+        href: # set the ip address or url
+        description: Torrent client
+        container: "qbittorrent"
+        statusStyle: "dot"
+        widget:
+            type: qbittorrent
+            url: # set the ip address or url
+            username: # set the username
+            password: # set the password
+
+    - Sabnzbd:
+        icon: sabnzbd.svg
+        href: # set the ip address or url
+        description: Usenet downloader
+        container: "sabnzbd"
+        statusStyle: "dot"
+        # widget:
+        #     type: sabnzbd
+        #     url: http://192.168.0.175:8100
+        #     key: apikeyapikeyapikeyapikeyapikey
+
+- Storage:
+    - TrueNAS:
+        icon: truenas.svg
+        href: # set the ip address or url
+        description: NAS management
+        widget:
+            type: truenas
+            url: # set the ip address or url
+            username: user # not required if using api key
+            password: pass # not required if using api key
+            key: # not required if using username / password
+            enablePools: true # optional, defaults to false
+            nasType: scale # defaults to scale, must be set to 'core' if using enablePools with TrueNAS Core
+
+    - Filebrowser:
+        icon: filebrowser.svg
+        href: # set the ip address or url
+        description: File Browser
+        container: "filebrowser"
+        statusStyle: "dot"
+
+- Utilities:
+    - Firefox:
+        icon: firefox.svg
+        href: # set the ip address or url
+        description: Browser
+        container: "firefox"
+        statusStyle: "dot"
+
+    - Dozzle:
+        icon: dozzle.svg
+        href: # set the ip address or url
+        description: Logs
+        container: "dozzle"
+        statusStyle: "dot"
+
+    - Vaultwarden:
+        icon: vaultwarden.svg
+        href: # set the ip address or url
+        description: Password manager
+        siteMonitor: # set the ip address or url
+        container: "vaultwarden"
+        statusStyle: "dot"
+
+    - Nginx Proxy Manager:
+        icon: nginx.svg
+        href: # set the ip address or url
+        description: Nginx reverse proxy
+        container: "nginx-proxy-app-1"
+        statusStyle: "dot"
+        widget:
+            type: npm
+            url: # set the ip address or url
+            username: # set the username
+            password: # set the password
+
+- Photos:
+    - Photoprism:
+        icon: photoprism.svg
+        href:  # set the ip address or url
+        description: Photo library
+        container: "photoprism-photoprism-1"
+        statusStyle: "dot"
+        widget:
+            type: photoprism
+            url:  # set the ip address or url
+            username: # required only if using username/password
+            password: # required only if using username/password
+            key: # required only if using app passwords

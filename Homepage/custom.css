@@ -1,0 +1,20 @@
+/* Replace status text with dots */
+.service-tags {
+    display: none; /* Hides the textual "Running" or "Healthy" */
+}
+
+.service-status.ping-up {
+    background-color: #4caf50; /* Green for up */
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.service-status.ping-down {
+    background-color: #f44336; /* Red for down */
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+}

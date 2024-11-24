@@ -1,0 +1,20 @@
+---
+# Widgets configuration for Homepage
+
+- resources:
+    cpu: true
+    memory: true
+    disk: /disk/mount/vault
+    cputemp: true
+    uptime: true
+    units: metric # only used by cpu temp
+    refresh: 3000 # optional, in ms
+    diskUnits: bytes # optional, bytes (default) or bbytes. Only applies to disk
+
+- datetime:
+    text_size: xl
+    # 1/23/22, 1:37 PM
+    format:
+    dateStyle: short
+    timeStyle: short
+    hour12: true
