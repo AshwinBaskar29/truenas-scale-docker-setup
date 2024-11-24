@@ -1,0 +1,8 @@
+services:
+  app:
+    image: 'docker.io/jc21/nginx-proxy-manager:latest'
+    restart: unless-stopped
+    network_mode: "host"
+    volumes:
+      - /mnt/vault/configs/ninx:/data
+      - /mnt/vault/configs/ninx/certs:/etc/letsencrypt

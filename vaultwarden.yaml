@@ -1,0 +1,12 @@
+services:
+  vaultwarden:
+    image: vaultwarden/server:latest
+    container_name: vaultwarden
+    restart: unless-stopped
+    ports:
+      - 8090:80
+    environment:
+      DOMAIN: "https://key.m3tal.xyz"  # Your domain here!
+      # ADMIN_TOKEN: changeme
+    volumes:
+      - /mnt/vault/configs/vaultwarden:/data
