@@ -159,6 +159,13 @@
         container: "firefox"
         statusStyle: "dot"
 
+    - YT-Downloader:
+        icon: youtube.svg
+        href: # set the ip address or url
+        description: Youube Downloader
+        container: "yt-downloader-ytdl_material-1"
+        statusStyle: "dot"
+
     - Dozzle:
         icon: dozzle.svg
         href: # set the ip address or url

@@ -9,4 +9,4 @@ services:
       DOMAIN: # Your domain here! (that you creted in nginx proxy)
       # ADMIN_TOKEN: changeme
     volumes:
-      - /mnt/vault/configs/vaultwarden:/data
+      - /mnt/<pool name>/configs/vaultwarden:/data
