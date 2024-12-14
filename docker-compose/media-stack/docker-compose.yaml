@@ -47,7 +47,7 @@ services:
       - "${FLARESOLVERR_PORT:?err}:8191"        # Service Port: FlareSolverr
 
     volumes:
-      - /mnt/<pool name>/configs/gluetun:/gluetun
+      - /mnt/Athena/configs/gluetun:/gluetun
     environment:
       - PUID=${PUID:?err}
       - PGID=${PGID:?err}
@@ -77,32 +77,32 @@ services:
     networks:
       - mediastack
 
-###########################################################################
-###########################################################################
-##
-##    Docker Compose File: Authelia (Authelia)
-##    Function: Multi-factor authentication portal for your Apps
-##
-##    Documentation: https://hub.docker.com/r/authelia/authelia
-##    https://www.authelia.com/integration/prologue/get-started/
-##    https://www.linuxserver.io/blog/zero-trust-hosting-and-reverse-proxy-via-cloudflare-swag-and-authelia
-##
-###########################################################################
-###########################################################################
-  authelia:
-    image: ghcr.io/authelia/authelia:latest
-    container_name: authelia
-    volumes:
-      - /mnt/<pool name>/configs/authelia:/config
-    environment:
-      - PUID=${PUID:?err}
-      - PGID=${PGID:?err}
-      # - UMASK=${UMASK:?err}
-      - TZ=${TIMEZONE:?err}
-    restart: unless-stopped
-# NOTE: Authelia MUST NOT connect to the Gluetun VPN container
-    networks:
-      - mediastack
+# ###########################################################################
+# ###########################################################################
+# ##
+# ##    Docker Compose File: Authelia (Authelia)
+# ##    Function: Multi-factor authentication portal for your Apps
+# ##
+# ##    Documentation: https://hub.docker.com/r/authelia/authelia
+# ##    https://www.authelia.com/integration/prologue/get-started/
+# ##    https://www.linuxserver.io/blog/zero-trust-hosting-and-reverse-proxy-via-cloudflare-swag-and-authelia
+# ##
+# ###########################################################################
+# ###########################################################################
+#   authelia:
+#     image: ghcr.io/authelia/authelia:latest
+#     container_name: authelia
+#     volumes:
+#       - /mnt/Athena/configs/authelia:/config
+#     environment:
+#       - PUID=${PUID:?err}
+#       - PGID=${PGID:?err}
+#       # - UMASK=${UMASK:?err}
+#       - TZ=${TIMEZONE:?err}
+#     restart: unless-stopped
+# # NOTE: Authelia MUST NOT connect to the Gluetun VPN container
+#     networks:
+#       - mediastack
 
 ###########################################################################
 ###########################################################################
@@ -119,9 +119,11 @@ services:
     container_name: bazarr
     restart: unless-stopped
     volumes:
-      - /mnt/<pool name>/configs/bazarr:/config
+      - /mnt/Athena/configs/bazarr:/config
       - ${FOLDER_FOR_TORRENTS:?err}:/app/qBittorrent/downloads
       - ${FOLDER_FOR_ENGLISH_MOVIES:?err}:/movies/English
+      - ${FOLDER_FOR_HINDI_MOVIES:?err}:/movies/Hindi
+      - ${FOLDER_FOR_TAMIL_MOVIES:?err}:/movies/Tamil
       - ${FOLDER_FOR_REGIONAL_MOVIES:?err}:/movies/Regional
       - ${FOLDER_FOR_ANIMATED_MOVIES:?err}:/movies/Animated_Movies
       - ${FOLDER_FOR_ANIME_MOVIES:?err}:/movies/Anime_Movies
@@ -154,7 +156,7 @@ services:
     restart: always
     user: ${PUID:?err}:${PGID:?err}
     volumes:
-      - /mnt/<pool name>/configs/ddns-updater:/updater/data
+      - /mnt/Athena/configs/ddns-updater:/updater/data
     ports:
       - ${WEBUI_PORT_DDNS_UPDATER:?err}:${WEBUI_PORT_DDNS_UPDATER:?err}/tcp
     environment:
@@ -212,33 +214,33 @@ services:
 #    ports:
 #      - "${FLARESOLVERR_PORT:?err}:8191"             # Configured in Gluetun VPN container
 
-###########################################################################
-###########################################################################
-##
-##  Docker Compose File: Homepage (https://ghcr.io/)
-##  Function: Application Dashboard
-##
-##  Documentation: https://gethomepage.dev/latest/configs/
-##
-###########################################################################
-###########################################################################
-  homepage:
-    image: ghcr.io/gethomepage/homepage:latest
-    container_name: homepage
-    restart: unless-stopped
-    ports:
-      - ${WEBUI_PORT_HOMEPAGE:?err}:3000
-    volumes:
-      - /mnt/<pool name>/configs/homepage:/app/config
-      - /var/run/docker.sock:/var/run/docker.sock
-    environment:
-      - PUID=0
-      - PGID=0
-      # - UMASK=${UMASK:?err}
-      - TZ=${TIMEZONE:?err}
-# NOTE: Homepage MUST NOT connect to the Gluetun VPN container
-    networks:
-      - mediastack
+# ###########################################################################
+# ###########################################################################
+# ##
+# ##  Docker Compose File: Homepage (https://ghcr.io/)
+# ##  Function: Application Dashboard
+# ##
+# ##  Documentation: https://gethomepage.dev/latest/configs/
+# ##
+# ###########################################################################
+# ###########################################################################
+#   homepage:
+#     image: ghcr.io/gethomepage/homepage:latest
+#     container_name: homepage
+#     restart: unless-stopped
+#     ports:
+#       - ${WEBUI_PORT_HOMEPAGE:?err}:3000
+#     volumes:
+#       - /mnt/Athena/configs/homepage:/app/config
+#       - /var/run/docker.sock:/var/run/docker.sock
+#     environment:
+#       - PUID=0
+#       - PGID=0
+#       # - UMASK=${UMASK:?err}
+#       - TZ=${TIMEZONE:?err}
+# # NOTE: Homepage MUST NOT connect to the Gluetun VPN container
+#     networks:
+#       - mediastack
 
 ###########################################################################
 ###########################################################################
@@ -255,7 +257,7 @@ services:
     container_name: lidarr
     restart: unless-stopped
     volumes:
-      - /mnt/<pool name>/configs/lidarr:/config
+      - /mnt/Athena/configs/lidarr:/config
       - ${FOLDER_FOR_TORRENTS:?err}:/app/qBittorrent/downloads
       - ${FOLDER_FOR_MUSIC:?err}:/music
     environment:
@@ -283,7 +285,7 @@ services:
     container_name: prowlarr
     restart: unless-stopped
     volumes:
-      - /mnt/<pool name>/configs/prowlarr:/config
+      - /mnt/Athena/configs/prowlarr:/config
     environment:
       - PUID=${PUID:?err}
       - PGID=${PGID:?err}
@@ -309,10 +311,12 @@ services:
     container_name: qbittorrent
     restart: unless-stopped
     volumes:
-      - /mnt/<pool name>/configs/qbittorrent:/config
+      - /mnt/Athena/configs/qbittorrent:/config
       - ${FOLDER_FOR_TORRENTS:?err}:/app/qBittorrent/downloads
       - ${FOLDER_FOR_MEDIA:?err}:/app/qBittorrent/media
       - ${FOLDER_FOR_ENGLISH_MOVIES:?err}:/movies/English
+      - ${FOLDER_FOR_HINDI_MOVIES:?err}:/movies/Hindi
+      - ${FOLDER_FOR_TAMIL_MOVIES:?err}:/movies/Tamil
       - ${FOLDER_FOR_REGIONAL_MOVIES:?err}:/movies/Regional
       - ${FOLDER_FOR_ANIMATED_MOVIES:?err}:/movies/Animated_Movies
       - ${FOLDER_FOR_ANIME_MOVIES:?err}:/movies/Anime_Movies
@@ -347,9 +351,11 @@ services:
     container_name: radarr
     restart: unless-stopped
     volumes:
-      - /mnt/<pool name>/configs/radarr:/config
+      - /mnt/Athena/configs/radarr:/config
       - ${FOLDER_FOR_TORRENTS:?err}:/app/qBittorrent/downloads
       - ${FOLDER_FOR_ENGLISH_MOVIES:?err}:/movies/English
+      - ${FOLDER_FOR_HINDI_MOVIES:?err}:/movies/Hindi
+      - ${FOLDER_FOR_TAMIL_MOVIES:?err}:/movies/Tamil
       - ${FOLDER_FOR_REGIONAL_MOVIES:?err}:/movies/Regional
       - ${FOLDER_FOR_ANIMATED_MOVIES:?err}:/movies/Animated_Movies
       - ${FOLDER_FOR_ANIME_MOVIES:?err}:/movies/Anime_Movies
@@ -378,10 +384,12 @@ services:
     container_name: sabnzbd
     restart: unless-stopped
     volumes:
-      - /mnt/<pool name>/configs/sabnzbd:/config
+      - /mnt/Athena/configs/sabnzbd:/config
       - ${FOLDER_FOR_TORRENTS:?err}:/app/sabnzbd/downloads
       - ${FOLDER_FOR_MEDIA:?err}:/app/sabnzbd/media
       - ${FOLDER_FOR_ENGLISH_MOVIES:?err}:/movies/English
+      - ${FOLDER_FOR_HINDI_MOVIES:?err}:/movies/Hindi
+      - ${FOLDER_FOR_TAMIL_MOVIES:?err}:/movies/Tamil
       - ${FOLDER_FOR_REGIONAL_MOVIES:?err}:/movies/Regional
       - ${FOLDER_FOR_ANIMATED_MOVIES:?err}:/movies/Animated_Movies
       - ${FOLDER_FOR_ANIME_MOVIES:?err}:/movies/Anime_Movies
@@ -414,7 +422,7 @@ services:
     container_name: sonarr
     restart: unless-stopped
     volumes:
-      - /mnt/<pool name>/configs/sonarr:/config
+      - /mnt/Athena/configs/sonarr:/config
       - ${FOLDER_FOR_TORRENTS:?err}:/app/qBittorrent/downloads
       - ${FOLDER_FOR_TV_SHOWS:?err}:/tv/Tv_shows
       - ${FOLDER_FOR_ANIMATED_TV_SHOWS:?err}:/tv/Animated_shows
@@ -438,7 +446,7 @@ services:
       - TZ=Asia/Kolkata
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - /mnt/<pool name>/configs/firefox:/config
+      - /mnt/Athena/configs/firefox:/config
     network_mode: service:gluetun
     shm_size: "1gb"
     restart: unless-stopped

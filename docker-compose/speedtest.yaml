@@ -7,7 +7,7 @@ services:
         environment:
             - PUID=568
             - PGID=568
-            - APP_KEY= # get the api key from https://speedtest-tracker.dev/
+            - APP_KEY=base64:pdjyuxmjDSGhsD5M2zwNZleI6wu+i5qeiW/0N3UWeGg= # get the api key from https://speedtest-tracker.dev/
             - DB_CONNECTION=sqlite
             - SPEEDTEST_SCHEDULE=0 0 * * *
 
@@ -18,7 +18,7 @@ services:
             - DISPLAY_TIMEZONE=Asia/Kolkata
             # - TZ=Asia/Kolkata
         volumes:
-            - /mnt/<pool name>/configs/speedtest:/config
-            - /mnt/<pool name>/configs/speedtest/certs:/config/keys
+            - /mnt/Athena/configs/speedtest:/config
+            - /mnt/Athena/configs/speedtest/certs:/config/keys
         image: lscr.io/linuxserver/speedtest-tracker:latest
         restart: unless-stopped

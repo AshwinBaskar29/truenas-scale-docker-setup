@@ -1,0 +1,13 @@
+services:
+  filebrowser:
+    image: filebrowser/filebrowser:latest
+    container_name: filebrowser
+    volumes:
+      - /mnt/Athena:/srv #Change to match your directory
+      - /mnt/Athena/configs/filebrowser/filebrowser.db:/database/filebrowser.db #Change to match your directory
+      - /mnt/Athena/configs/filebrowser/settings.json:/config/settings.json #Change to match your directory
+    environment:
+      - PUID=0
+      - PGID=0
+    ports:
+      - 8095:80 #Change the port if needed

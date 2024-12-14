@@ -4,5 +4,5 @@ services:
     restart: unless-stopped
     network_mode: "host"
     volumes:
-      - /mnt/<pool name>/configs/ninx:/data
-      - /mnt/<pool name>/configs/ninx/certs:/etc/letsencrypt
+      - /mnt/Athena/configs/ninx:/data
+      - /mnt/Athena/configs/ninx/certs:/etc/letsencrypt

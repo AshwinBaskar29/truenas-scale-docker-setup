@@ -11,26 +11,26 @@ services:
       - "2342:2342"
     working_dir: "/photoprism" # do not change or remove
     volumes:
-      - "/mnt/<pool name>/photos:/photoprism/originals" # Originals mount path can be changed as needed (DO NOT REMOVE)
-      - "/mnt/<pool name>/configs/photoprism:/photoprism/storage"     # *Writable* storage folder for cache, database, and sidecar files (DO NOT REMOVE)
-    devices:
-      - /dev/dri/renderD128:/dev/dri/renderD128
-      - /dev/dri/card0:/dev/dri/card0
+      - "/mnt/Athena/photos:/photoprism/originals" # Originals mount path can be changed as needed (DO NOT REMOVE)
+      - "/mnt/Athena/configs/photoprism:/photoprism/storage"     # *Writable* storage folder for cache, database, and sidecar files (DO NOT REMOVE)
+    # devices:
+    #   - /dev/dri/renderD128:/dev/dri/renderD128
+    #   - /dev/dri/card0:/dev/dri/card0
     environment:
       - PHOTOPRISM_ADMIN_USER="admin"                 # admin login username
       - PHOTOPRISM_ADMIN_PASSWORD="insecure"          # initial admin password (8-72 characters)
       - PHOTOPRISM_AUTH_MODE="password"               # authentication mode (public, password)
-      - PHOTOPRISM_FFMPEG_ENCODER="nvidia"
-      - PHOTOPRISM_INIT="tensorflow"
-      - NVIDIA_VISIBLE_DEVICES="all"
+      # - PHOTOPRISM_FFMPEG_ENCODER="nvidia"
+      # - PHOTOPRISM_INIT="tensorflow"
+      # - NVIDIA_VISIBLE_DEVICES="all"
 
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: "nvidia"
-              count: 1
-              capabilities: [gpu]
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: "nvidia"
+    #           count: 1
+    #           capabilities: [gpu]
 
 
   mariadb:

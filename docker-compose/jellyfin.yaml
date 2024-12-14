@@ -19,15 +19,17 @@ services:
       - /dev/dri/renderD128:/dev/dri/renderD128
       - /dev/dri/card0:/dev/dri/card0
     volumes:
-      - /mnt/<pool name>/configs/jellyfin:/config
-      - /mnt/<pool name>/media/Movies/English:/movies/English
-      - /mnt/<pool name>/media/Movies/Regional:/movies/Regional
-      - /mnt/<pool name>/media/Animated/Animated_Movies:/movies/Animated_Movies
-      - /mnt/<pool name>/media/Anime/Anime_Movies:/movies/Anime_Movies
-      - /mnt/<pool name>/media/Family_Videos:/movies/Family_Videos
-      - /mnt/<pool name>/media/Tv_Shows:/tv/Tv_shows
-      - /mnt/<pool name>/media/Animated/Animated_Shows:/tv/Animated_shows
-      - /mnt/<pool name>/media/Anime/Anime_Shows:/tv/Anime_shows
+      - /mnt/Athena/configs/jellyfin:/config
+      - /mnt/Athena/media/Movies/English:/movies/English
+      - /mnt/Athena/media/Movies/Tamil:/movies/Tamil
+      - /mnt/Athena/media/Movies/Hindi:/movies/Hindi
+      - /mnt/Athena/media/Movies/Regional:/movies/Regional
+      - /mnt/Athena/media/Animated/Animated_Movies:/movies/Animated_Movies
+      - /mnt/Athena/media/Anime/Anime_Movies:/movies/Anime_Movies
+      - /mnt/Athena/media/Family_Videos:/movies/Family_Videos
+      - /mnt/Athena/media/Tv_Shows:/tv/Tv_shows
+      - /mnt/Athena/media/Animated/Animated_Shows:/tv/Animated_shows
+      - /mnt/Athena/media/Anime/Anime_Shows:/tv/Anime_shows
     ports:
       - 8096:8096
       # - 7359:7359/udp      # Enable for DLNA - Only works on HOST Network Mode
@@ -37,10 +39,10 @@ services:
       - PGID=568
       - TZ=Asia/Kolkata
       # - JELLYFIN_PublishedServerUrl=${LOCAL_DOCKER_IP:?err}  # Enable for DLNA - Only works on HOST Network Mode
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: all
-              capabilities: [gpu]
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: all
+    #           capabilities: [gpu]
