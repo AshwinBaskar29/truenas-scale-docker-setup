@@ -1,0 +1,22 @@
+{
+    "settings": [
+      {
+        "provider": "cloudflare",
+        "zone_identifier": "ce273420a13ea5e7b2642fe1c1420b03",
+        "domain": "ath3na.cc",
+        "ttl": 600,
+        "token": "0MzaLcIDeNEHoNAXKGoBf-Fk6yTrwK5nEKYeE3Pl",
+        "ip_version": "ipv4",
+        "ipv6_suffix": ""
+      },
+      {
+        "provider": "cloudflare",
+        "zone_identifier": "ce273420a13ea5e7b2642fe1c1420b03",
+        "domain": "*.ath3na.cc",
+        "ttl": 600,
+        "token": "0MzaLcIDeNEHoNAXKGoBf-Fk6yTrwK5nEKYeE3Pl",
+        "ip_version": "ipv4",
+        "ipv6_suffix": ""
+      }
+    ]
+  }
