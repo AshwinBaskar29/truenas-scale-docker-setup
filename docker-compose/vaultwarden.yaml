@@ -6,7 +6,7 @@ services:
     ports:
       - 8090:80
     environment:
-      DOMAIN: "vault.ath3na.cc" # Your domain here! (that you created in nginx proxy)
+      DOMAIN: "https://vault.ath3na.cc/" # Your domain here! (that you created in nginx proxy)
       # ADMIN_TOKEN: changeme
     volumes:
       - /mnt/Athena/configs/vaultwarden:/data
