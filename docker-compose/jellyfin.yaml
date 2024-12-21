@@ -30,6 +30,8 @@ services:
       - /mnt/Athena/media/Tv_Shows:/tv/Tv_shows
       - /mnt/Athena/media/Animated/Animated_Shows:/tv/Animated_shows
       - /mnt/Athena/media/Anime/Anime_Shows:/tv/Anime_shows
+    group_add:
+      - "107"
     ports:
       - 8096:8096
       # - 7359:7359/udp      # Enable for DLNA - Only works on HOST Network Mode
