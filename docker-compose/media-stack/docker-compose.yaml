@@ -40,10 +40,9 @@ services:
       - "${WEBUI_PORT_RADARR:?err}:7878"        # WebUI Portal: Radarr
       - "${WEBUI_PORT_SABNZBD:?err}:8080"       # WebUI Portal: SABnzbd
       - "${WEBUI_PORT_SONARR:?err}:8989"        # WebUI Portal: Sonarr
-      - "${WEBUI_PORT_FIREFOX:?err}:3000"        # WebUI Portal: Firefox
-
+      - "${WEBUI_PORT_FIREFOX:?err}:3000"       # WebUI Portal: Firefox
+      - "${WEBUI_PORT_SPEEDTESTVPN:?err}:80/tcp"  # WebUI Portal: Speedtest
       - "${WEBUI_PORT_QBITTORRENT:?err}:${WEBUI_PORT_QBITTORRENT:?err}"   # WebUI Portal: qBittorrent
-
       - "${FLARESOLVERR_PORT:?err}:8191"        # Service Port: FlareSolverr
 
     volumes:
@@ -437,6 +436,8 @@ services:
 #    ports:
 #      - "${WEBUI_PORT_SONARR:?err}:8989"             # Configured in Gluetun VPN container
 
+###########################################################################
+######################firefox
   firefox:
     image: ghcr.io/linuxserver/firefox:latest
     container_name: firefox
@@ -453,3 +454,28 @@ services:
     depends_on:
       gluetun:
         condition: service_healthy
+
+#############################################################################
+#######################speedtest
+  speedtestvpn:
+        container_name: speedtest-tracker-vpn
+        environment:
+            - PUID=${PUID:?err}
+            - PGID=${PGID:?err}
+            - APP_KEY=base64:pdjyuxmjDSGhsD5M2zwNZleI6wu+i5qeiW/0N3UWeGg= # get the api key from https://speedtest-tracker.dev/
+            - DB_CONNECTION=sqlite
+            - SPEEDTEST_SCHEDULE=5 0 * * *
+            - PRUNE_RESULTS_OLDER_THAN=
+            - CHART_DATETIME_FORMAT= 
+            - DATETIME_FORMAT=
+            - APP_TIMEZONE=Asia/Kolkata
+            - DISPLAY_TIMEZONE=Asia/Kolkata
+            # - TZ=Asia/Kolkata
+        volumes:
+            - /mnt/Athena/configs/speedtestvpn:/config
+            - /mnt/Athena/configs/speedtestvpn/certs:/config/keys
+        image: lscr.io/linuxserver/speedtest-tracker:latest
+        restart: unless-stopped
+        network_mode: "service:gluetun"
+        depends_on:
+            - gluetun
