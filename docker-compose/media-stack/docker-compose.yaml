@@ -21,7 +21,7 @@ services:
   gluetun:
     image: qmcgaw/gluetun:latest
     container_name: gluetun
-    # restart: always
+    restart: unless-stopped
     cap_add:
       - NET_ADMIN
     devices:
@@ -152,7 +152,7 @@ services:
   ddns-updater:
     image: qmcgaw/ddns-updater:latest
     container_name: ddns-updater
-    restart: always
+    restart: unless-stopped
     user: ${PUID:?err}:${PGID:?err}
     volumes:
       - /mnt/Athena/configs/ddns-updater:/updater/data
