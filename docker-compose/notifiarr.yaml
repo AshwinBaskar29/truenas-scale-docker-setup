@@ -1,0 +1,14 @@
+services:
+  notifiarr:
+    container_name: notifiarr
+    hostname: notifiarr
+    image: golift/notifiarr
+    restart: unless-stopped
+    ports:
+      - "5454:5454"
+    environment:
+      - DN_API_KEY= c47ca38b-3c69-4328-aa2a-31b3caf81ada
+    volumes:
+      - /mnt/Athena/configs/notifiarr:/config
+      - /var/run/utmp:/var/run/utmp
+      - /etc/machine-id:/etc/machine-id
