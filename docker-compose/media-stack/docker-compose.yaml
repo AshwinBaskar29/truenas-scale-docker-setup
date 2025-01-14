@@ -387,8 +387,6 @@ services:
       - ${FOLDER_FOR_TORRENTS:?err}:/app/sabnzbd/downloads
       - ${FOLDER_FOR_MEDIA:?err}:/app/sabnzbd/media
       - ${FOLDER_FOR_ENGLISH_MOVIES:?err}:/movies/English
-      - ${FOLDER_FOR_HINDI_MOVIES:?err}:/movies/Hindi
-      - ${FOLDER_FOR_TAMIL_MOVIES:?err}:/movies/Tamil
       - ${FOLDER_FOR_REGIONAL_MOVIES:?err}:/movies/Regional
       - ${FOLDER_FOR_ANIMATED_MOVIES:?err}:/movies/Animated_Movies
       - ${FOLDER_FOR_ANIME_MOVIES:?err}:/movies/Anime_Movies

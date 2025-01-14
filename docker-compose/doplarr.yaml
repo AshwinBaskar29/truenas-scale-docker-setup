@@ -1,0 +1,18 @@
+services:
+  doplarr:
+    image: lscr.io/linuxserver/doplarr:latest
+    container_name: doplarr
+    environment:
+      - PUID=568
+      - PGID=568
+      - TZ=Asia/Kolkata
+      - DISCORD__TOKEN= #discord bot token from https://discord.com/developers/applications
+      - RADARR__API=
+      - RADARR__URL=
+      - SONARR__API=
+      - SONARR__URL=
+    volumes:
+      - /mnt/hostname/configs/doplarr:/config
+    restart: unless-stopped
+    ports:
+      - "4545:4545"

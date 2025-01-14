@@ -3,9 +3,9 @@ services:
     image: filebrowser/filebrowser:latest
     container_name: filebrowser
     volumes:
-      - /mnt/Athena:/srv #Change to match your directory
-      - /mnt/Athena/configs/filebrowser/filebrowser.db:/database/filebrowser.db #Change to match your directory
-      - /mnt/Athena/configs/filebrowser/settings.json:/config/settings.json #Change to match your directory
+      - /mnt/hostname:/srv #Change to match your directory
+      - /mnt/hostname/configs/filebrowser/filebrowser.db:/database/filebrowser.db #Change to match your directory
+      - /mnt/hostname/configs/filebrowser/settings.json:/config/settings.json #Change to match your directory
     environment:
       - PUID=0
       - PGID=0

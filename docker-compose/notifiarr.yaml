@@ -7,8 +7,8 @@ services:
     ports:
       - "5454:5454"
     environment:
-      - DN_API_KEY= <API-KEY>
+      - DN_API_KEY= #API Key from notifiarr.com
     volumes:
-      - /mnt/Athena/configs/notifiarr:/config
+      - /mnt/hostname/configs/notifiarr:/config
       - /var/run/utmp:/var/run/utmp
       - /etc/machine-id:/etc/machine-id

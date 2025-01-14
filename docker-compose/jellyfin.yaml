@@ -19,17 +19,15 @@ services:
       - /dev/dri/renderD128:/dev/dri/renderD128
       - /dev/dri/card0:/dev/dri/card0
     volumes:
-      - /mnt/Athena/configs/jellyfin:/config
-      - /mnt/Athena/media/Movies/English:/movies/English
-      - /mnt/Athena/media/Movies/Tamil:/movies/Tamil
-      - /mnt/Athena/media/Movies/Hindi:/movies/Hindi
-      - /mnt/Athena/media/Movies/Regional:/movies/Regional
-      - /mnt/Athena/media/Animated/Animated_Movies:/movies/Animated_Movies
-      - /mnt/Athena/media/Anime/Anime_Movies:/movies/Anime_Movies
-      - /mnt/Athena/media/Family_Videos:/movies/Family_Videos
-      - /mnt/Athena/media/Tv_Shows:/tv/Tv_shows
-      - /mnt/Athena/media/Animated/Animated_Shows:/tv/Animated_shows
-      - /mnt/Athena/media/Anime/Anime_Shows:/tv/Anime_shows
+      - /mnt/hostname/configs/jellyfin:/config
+      - /mnt/hostname/media/Movies/English:/movies/English
+      - /mnt/hostname/media/Movies/Regional:/movies/Regional
+      - /mnt/hostname/media/Animated/Animated_Movies:/movies/Animated_Movies
+      - /mnt/hostname/media/Anime/Anime_Movies:/movies/Anime_Movies
+      - /mnt/hostname/media/Family_Videos:/movies/Family_Videos
+      - /mnt/hostname/media/Tv_Shows:/tv/Tv_shows
+      - /mnt/hostname/media/Animated/Animated_Shows:/tv/Animated_shows
+      - /mnt/hostname/media/Anime/Anime_Shows:/tv/Anime_shows
     group_add:
       - "107"
     ports:

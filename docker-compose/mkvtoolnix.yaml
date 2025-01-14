@@ -1,0 +1,12 @@
+version: '3'
+services:
+  mkvtoolnix:
+    image: jlesage/mkvtoolnix
+    ports:
+      - "5800:5800"
+    environment:
+      - USER_ID= #PUID
+      - GROUP_ID= #PGID
+    volumes:
+      - "/mnt/hostname/configs/mkvtoolnix:/config"
+      - "/mnt/hostname/media/Mov:/storage"

@@ -11,8 +11,8 @@ services:
       - "2342:2342"
     working_dir: "/photoprism" # do not change or remove
     volumes:
-      - "/mnt/Athena/photos:/photoprism/originals" # Originals mount path can be changed as needed (DO NOT REMOVE)
-      - "/mnt/Athena/configs/photoprism:/photoprism/storage"     # *Writable* storage folder for cache, database, and sidecar files (DO NOT REMOVE)
+      - "/mnt/hostname/photos:/photoprism/originals" # Originals mount path can be changed as needed (DO NOT REMOVE)
+      - "/mnt/hostname/configs/photoprism:/photoprism/storage"     # *Writable* storage folder for cache, database, and sidecar files (DO NOT REMOVE)
     # devices:
     #   - /dev/dri/renderD128:/dev/dri/renderD128
     #   - /dev/dri/card0:/dev/dri/card0

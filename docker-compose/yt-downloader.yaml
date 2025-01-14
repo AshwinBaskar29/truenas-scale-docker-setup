@@ -8,9 +8,9 @@ services:
         depends_on:
             - ytdl-mongo-db
         volumes:
-            - /mnt/Athena/configs/yt-downloader:/app/appdata
-            - /mnt/Athena/torrents/yt-downloader/audio:/app/audio
-            - /mnt/Athena/torrents/yt-downloader/video:/app/video
+            - /mnt/hostname/configs/yt-downloader:/app/appdata
+            - /mnt/hostname/torrents/yt-downloader/audio:/app/audio
+            - /mnt/hostname/torrents/yt-downloader/video:/app/video
         ports:
             - "8998:17442"
         image: tzahi12345/youtubedl-material:latest

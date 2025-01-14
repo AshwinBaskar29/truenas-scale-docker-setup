@@ -18,7 +18,7 @@ services:
             - DISPLAY_TIMEZONE=Asia/Kolkata
             # - TZ=Asia/Kolkata
         volumes:
-            - /mnt/Athena/configs/speedtest:/config
-            - /mnt/Athena/configs/speedtest/certs:/config/keys
+            - /mnt/hostname/configs/speedtest:/config
+            - /mnt/hostname/configs/speedtest/certs:/config/keys
         image: lscr.io/linuxserver/speedtest-tracker:latest
         restart: unless-stopped
